@@ -1,0 +1,27 @@
+{
+  "name": "komdigi-fsd-intermediate-modul-2-backend-health-ecommerce-database-starter",
+  "version": "1.0.0",
+  "description": "Starter project untuk Health Products Database dengan Mongoose",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "seed": "node scripts/seed.js"
+  },
+  "keywords": [
+    "mongodb",
+    "mongoose",
+    "database",
+    "health",
+    "ecommerce"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "mongoose": "^8.24.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
