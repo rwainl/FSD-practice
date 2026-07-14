@@ -18,25 +18,14 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
-
-// TODO: Import middleware
-// const { authenticateToken } = require('../middleware/auth');
-// const { authorizeRole } = require('../middleware/authorize');
+const { authenticateToken } = require('../middleware/auth');
+const { authorizeRole } = require('../middleware/authorize');
 
 router.get('/', productController.getProducts);
 router.get('/:id', productController.getProductById);
-router.post('/', productController.createProduct);
-router.patch('/:id', productController.updateProduct);
-router.delete('/:id', productController.deleteProduct);
-
-// TODO: POST / - Create product (Admin only)
-// router.post('/', authenticateToken, authorizeRole('admin'), productController.createProduct);
-
-// TODO: PUT /:id - Update product (Admin only)
-// router.put('/:id', authenticateToken, authorizeRole('admin'), productController.updateProduct);
-
-// TODO: DELETE /:id - Delete product (Admin only)
-// router.delete('/:id', authenticateToken, authorizeRole('admin'), productController.deleteProduct);
+router.post('/', authenticateToken, authorizeRole('admin'), productController.createProduct);
+router.patch('/:id', authenticateToken, authorizeRole('admin'), productController.updateProduct);
+router.delete('/:id', authenticateToken, authorizeRole('admin'), productController.deleteProduct);
 
 module.exports = router;
 
