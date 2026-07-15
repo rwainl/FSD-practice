@@ -14,16 +14,15 @@
  * Reference: ../finished-project/config/cloudinary.js
  */
 
-// TODO: Import cloudinary
-// const cloudinary = require('cloudinary').v2;
+const cloudinary = require('cloudinary').v2;
 
-// TODO: Configure cloudinary
-// cloudinary.config({...});
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+if(!process.env.CLOUDINARY_CLOUD_NAME) {
+    console.warn('Cloudinary credentials not set');
+}
 
-// TODO: Validate configuration
-// if (!process.env.CLOUDINARY_CLOUD_NAME) {
-//   console.warn('  Cloudinary credentials not set');
-// }
-
-// TODO: Export
-// module.exports = cloudinary;
+module.exports = cloudinary;

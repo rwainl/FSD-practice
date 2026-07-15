@@ -1,39 +1,16 @@
-/**
- * Authentication Routes
- * 
- * TODO untuk peserta:
- * 1. Import express router
- * 2. Import authController
- * 3. Import middleware (authenticateToken)
- * 4. Create routes:
- *    - POST /register - Register new user
- *    - POST /login - Login user
- *    - GET /profile - Get user profile (Protected)
- *    - PUT /profile - Update user profile (Protected)
- * 
- * Reference: ../finished-project/routes/authRoutes.js
- */
-
 const express = require('express');
 const router = express.Router();
+const authController = require('../controllers/authController');
+const { authenticateToken } = require('../middleware/auth');
 
-// TODO: Import controller
-// const authController = require('../controllers/authController');
 
-// TODO: Import middleware
-// const { authenticateToken } = require('../middleware/auth');
+router.post('/register', authController.register);
 
-// TODO: POST /register
-// router.post('/register', authController.register);
+router.post('/login', authController.login);
 
-// TODO: POST /login
-// router.post('/login', authController.login);
+router.get('/profile', authenticateToken, authController.getProfile);
 
-// TODO: GET /profile (Protected)
-// router.get('/profile', authenticateToken, authController.getProfile);
-
-// TODO: PUT /profile (Protected)
-// router.put('/profile', authenticateToken, authController.updateProfile);
+router.put('/profile', authenticateToken, authController.updateProfile);
 
 module.exports = router;
 

@@ -24,6 +24,21 @@
  * Reference: ../finished-project/controllers/uploadController.js
  */
 
+const cloudinary = require('../config/cloudinary');
+const User = require('../models/User');
+
+exports.uploadProductImage = async(req, res) => {
+    try {
+        const productImage = await 
+    } catch (error) {
+        console.error("Error upload product image");
+        return res.status(500).json({
+            success: false,
+            message: "Failed uploading product image",
+        })
+    }
+}
+
 // TODO: Import dependencies
 // const cloudinary = require('../config/cloudinary');
 // const User = require('../models/User');
