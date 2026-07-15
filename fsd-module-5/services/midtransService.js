@@ -30,45 +30,42 @@ class MidtransService {
 
   async createTransaction(orderData) {
     try {
-      // TODO: Build transaction parameter
-      // const parameter = {
-      //   transaction_details: {
-      //     order_id: orderData.orderId,
-      //     gross_amount: orderData.amount
-      //   },
-      //   customer_details: {
-      //     first_name: orderData.customerName,
-      //     email: orderData.customerEmail,
-      //     phone: orderData.customerPhone
-      //   },
-      //   item_details: orderData.items
-      // };
+      const parameter = {
+        transaction_details: {
+          order_id: orderData.orderId,
+          gross_amout: orderData.amount,
+        },
+        customer_details: {
+          first_name: orderData.customerName,
+          email: orderData.customerEmail,
+          phone: orderData.customerPhone,
+        },
+        item_details: orderData.items
+      };
 
-      // TODO: Create authorization header
-      // const authString = Buffer.from(`${this.serverKey}:`).toString('base64');
+      const authString = Buffer.from(`${this.serverKey}: `).toString('base64');
 
-      // TODO: Call Midtrans Snap API
-      // const response = await axios.post(
-      //   this.snapURL,
-      //   parameter,
-      //   {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       'Authorization': `Basic ${authString}`
-      //     }
-      //   }
-      // );
-
-      // return {
-      //   success: true,
-      //   token: response.data.token,
-      //   redirectUrl: response.data.redirect_url
-      // };
+      const response = await axios.post(
+        this.snapURL,
+        parameter,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Basic ${authString}`,
+          }
+        }
+      );
 
       return {
-        success: false,
-        message: "  TODO: Implement Midtrans payment creation",
-      };
+        success: true,
+        token: response.data.token,
+        redirectURL: response.data.redirect_url,
+      }
+
+      // return {
+      //   success: false,
+      //   message: "  TODO: Implement Midtrans payment creation",
+      // };
     } catch (error) {
       console.error(" Midtrans Error:", error.message);
 

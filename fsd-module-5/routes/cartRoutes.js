@@ -17,23 +17,13 @@
 const express = require('express');
 const router = express.Router();
 
-// TODO: Import controller
-// const cartController = require('../controllers/cartController');
+const cartController = require('../controllers/cartController');
+const { authenticateToken } = require('../middleware/auth');
 
-// TODO: Import middleware
-// const { authenticateToken } = require('../middleware/auth');
-
-// TODO: GET / - Get cart
-// router.get('/', authenticateToken, cartController.getCart);
-
-// TODO: POST / - Add to cart
-// router.post('/', authenticateToken, cartController.addToCart);
-
-// TODO: PUT /:productId - Update quantity
-// router.put('/:productId', authenticateToken, cartController.updateCartItem);
-
-// TODO: DELETE /:productId - Remove from cart
-// router.delete('/:productId', authenticateToken, cartController.removeFromCart);
+router.get("/", authenticateToken, cartController, getCart);
+router.post("/", authenticateToken, cartController, addCart);
+router.patch("/:productId", authenticateToken, cartController, updateCart);
+router.delete("/:productId", authenticateToken, cartController, removeFromCart);
 
 module.exports = router;
 

@@ -14,18 +14,11 @@
 
 const express = require('express');
 const router = express.Router();
+const orderController = require('../controllers/orderController');
+const { authenticateToken } = require('../middleware/auth');
 
-// TODO: Import controller
-// const orderController = require('../controllers/orderController');
-
-// TODO: Import middleware
-// const { authenticateToken } = require('../middleware/auth');
-
-// TODO: GET / - Get order history
-// router.get('/', authenticateToken, orderController.getOrderHistory);
-
-// TODO: GET /:orderId - Get order detail
-// router.get('/:orderId', authenticateToken, orderController.getOrderById);
+router.get('/', authenticateToken, orderController, getOrderHistory);
+router.get('/:id', authenticateToken, orderController, getOrderById);
 
 module.exports = router;
 
