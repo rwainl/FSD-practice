@@ -17,41 +17,29 @@ const express = require("express");
 const router = express.Router();
 
 // TODO: Import controllers
-// const aiController = require('../controllers/aiController');
+const aiController = require('../controllers/aiController');
 
 // TODO: Import services
 // const kemenkesService = require('../services/kemenkesService');
-// const midtransService = require('../services/midtransService');
+const midtransService = require('../services/midtransService');
 
 // TODO: Import middleware
-// const { authenticateToken } = require('../middleware/auth');
-// const { authorizeRole } = require('../middleware/authorize');
+const { authenticateToken } = require('../middleware/auth');
+const { authorizeRole } = require('../middleware/authorize');
 
 // TODO: Setup rate limiting for AI endpoint
-// const rateLimit = require('express-rate-limit');
-// const aiLimiter = rateLimit({
-//   windowMs: 15 * 60 * 1000, // 15 minutes
-//   max: 10, // Max 10 AI requests
-//   message: {
-//     success: false,
-//     message: 'Too many AI requests. Please wait.'
-//   }
-// });
 
-// ==========================================
-// AI Chatbot Routes
-// ==========================================
-
-// TODO: POST /ai/ask - Ask AI for health recommendations
-// router.post('/ai/ask', authenticateToken, aiLimiter, aiController.askAI);
-
-router.post("/ai/ask", (req, res) => {
-  res.json({
+const rateLimit = require('express-rate-limit');
+const aiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: {
     success: false,
-    message: "  TODO: Implement AI endpoint",
-    hint: "Uncomment route dan implement aiController.askAI",
-  });
+    message: "Too many AI requests",
+  }
 });
+
+router.post('/ai/ask', authenticateToken, aiLimiter, aiController.askAI);
 
 // ==========================================
 // Kemenkes API Routes
@@ -107,65 +95,48 @@ router.post("/kemenkes/sync", (req, res) => {
 // ==========================================
 
 // TODO: POST /payment/create - Create Midtrans payment
-// router.post('/payment/create', authenticateToken, async (req, res) => {
-//   try {
-//     const { items } = req.body;
-//
-//     // Calculate total amount
-//     const amount = items.reduce((sum, item) =>
-//       sum + (item.price * item.quantity), 0
-//     );
-//
-//     // Generate unique order ID
-//     const orderId = `ORDER-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-//
-//     // Create payment
-//     const result = await midtransService.createTransaction({
-//       orderId,
-//       amount,
-//       customerName: req.user.name,
-//       customerEmail: req.user.email,
-//       customerPhone: req.user.phone || '08123456789',
-//       items
-//     });
-//
-//     res.json(result);
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: 'Payment creation failed'
-//     });
-//   }
-// });
 
-router.post("/payment/create", (req, res) => {
-  res.json({
-    success: false,
-    message: "  TODO: Implement payment endpoint",
-  });
-});
+router.post('/payment/create', authenticateToken, async (req, res) => {
+  try {
+    const {items} = req.body;
 
-// TODO: POST /payment/webhook - Handle Midtrans webhook (No auth!)
-// router.post('/payment/webhook', async (req, res) => {
-//   try {
-//     const notification = req.body;
-//     const result = midtransService.handleNotification(notification);
-//
-//     // Always return 200 to Midtrans
-//     res.json(result);
-//   } catch (error) {
-//     res.json({
-//       success: false,
-//       message: 'Webhook processing failed'
-//     });
-//   }
-// });
+    const amount = items.reduce((sum, item) => {
+      sum + (item.price * item.quantity), 0;
+    });
 
-router.post("/payment/webhook", (req, res) => {
-  res.json({
-    success: false,
-    message: "  TODO: Implement webhook handler",
-  });
+    const orderId = `ORDER-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+    const result = await midtransService.createTransaction({
+      orderId,
+      amount,
+      customerName: req.user.name,
+      customerEmail: req.user.email,
+      customerPhone: req.user.phone || '08123456789',
+      items,
+    });
+
+    return res.json(result);
+  } catch (error) {
+    console.error("Payment error: ", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Failed connecting to payment gateway",
+    });
+  }
+})
+
+router.post('/payment/webhook', async(req, res) => {
+  try {
+    const notification = req.body;
+    const result = midtransService.handleNotification(notification);
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error payment webhook");
+    return res.status(500).json({
+      success: false,
+      message: 'Webhook processing failed',
+    });
+  }
 });
 
 module.exports = router;

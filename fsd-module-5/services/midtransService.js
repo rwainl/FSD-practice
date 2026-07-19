@@ -60,12 +60,7 @@ class MidtransService {
         success: true,
         token: response.data.token,
         redirectURL: response.data.redirect_url,
-      }
-
-      // return {
-      //   success: false,
-      //   message: "  TODO: Implement Midtrans payment creation",
-      // };
+      };
     } catch (error) {
       console.error(" Midtrans Error:", error.message);
 
@@ -78,52 +73,53 @@ class MidtransService {
   }
 
   verifySignatureKey(orderId, statusCode, grossAmount, serverKey) {
-    // TODO: Implement signature verification
-    // Midtrans signature: SHA512(order_id + status_code + gross_amount + server_key)
-    // const signatureString = `${orderId}${statusCode}${grossAmount}${serverKey}`;
-    // return crypto.createHash('sha512').update(signatureString).digest('hex');
+    const signatureString = `${orderId}${statusCode}${grossAmout}${serverKey}`;
 
-    return "";
+    return crypto.createHash('sha512').update(signatureString).digest('hex');
   }
 
   handleNotification(notification) {
     try {
-      // TODO: Verify signature
-      // const calculatedSignature = this.verifySignatureKey(
-      //   notification.order_id,
-      //   notification.status_code,
-      //   notification.gross_amount,
-      //   this.serverKey
-      // );
+      const calculatedSignature = this.verifySignatureKey(
+        notification.order_id,
+        notification.status_code,
+        notification.gross_amount,
+        this.serverKey,
+      );
 
-      // if (calculatedSignature !== notification.signature_key) {
-      //   return {
-      //     success: false,
-      //     message: 'Invalid signature'
-      //   };
-      // }
+      if(calculatedSignature !== notification.signature_key) {
+        return {
+          success: false,
+          message: "Invalid signature",
+        };
+      }
 
-      // TODO: Parse transaction status
-      // const transactionStatus = notification.transaction_status;
-      // let orderStatus;
+      const transactionStatus = notification.transaction_status;
+      const fraudStatus = notification.fraud_status;
 
-      // if (transactionStatus === 'settlement') {
-      //   orderStatus = 'paid';
-      // } else if (transactionStatus === 'pending') {
-      //   orderStatus = 'pending';
-      // } else {
-      //   orderStatus = 'failed';
-      // }
+      let orderStatus;
 
-      // return {
-      //   success: true,
-      //   orderId: notification.order_id,
-      //   status: orderStatus
-      // };
+      if(transactionStatus === "capture") {
+        orderStatus = fraudStatus === "accept" ? "paid" : "fraud";
+      } else if (transactionStatus === "settlement") {
+        orderStatus = "paid";
+      } else if (transactionStatus === "pending") {
+        orderStatus = "pending";
+      } else if (
+        transactionStatus === "deny" ||
+        transactionStatus === "cancel" ||
+        transactionStatus === "expire" 
+      ) {
+        orderStatus = "failed";
+      }
 
       return {
-        success: false,
-        message: "  TODO: Implement webhook handler",
+        success: true, 
+        orderId: notification.order._id,
+        transactionId: notification.transaction_id,
+        status: orderStatus,
+        paymentType: notification.payment_type,
+        grossAmount: notification.gross_amount,
       };
     } catch (error) {
       console.error(" Webhook Error:", error.message);

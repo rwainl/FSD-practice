@@ -15,19 +15,17 @@ require("dotenv").config();
 const express = require("express");
 const connectDB = require('./config/database');
 
-// TODO: Import middleware yang diperlukan
 const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 
-// TODO: Import routes
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
-const cartRoutes = require('./routes/cartRoutes');
-// const uploadRoutes = require('./routes/uploadRoutes');
-// const externalRoutes = require('./routes/externalRoutes');
-const orderRoutes = require('./routes/orderRoutes');
+const cartRoute = require('./routes/cartRoutes');
+const externalRoutes = require('./routes/externalRoutes');
+const orderRoutes = require('./routes/externalRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -62,8 +60,8 @@ app.get("/health", (req, res) => {
 app.use('/api/products', productRoutes);     // Product CRUD
 app.use('/api/auth', authRoutes);            // Authentication
 app.use('/api/cart', cartRoutes);            // Shopping Cart
-// app.use('/api/upload', uploadRoutes);        // Image Upload
-// app.use('/api/external', externalRoutes);    // External Integrations (AI, Payment)
+app.use('/api/upload', uploadRoutes);        // Image Upload
+app.use('/api/external', externalRoutes);    // External Integrations (AI, Payment)
 app.use('/api/orders', orderRoutes);         // Order History
 
 app.use((err, req, res, next) => {
