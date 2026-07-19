@@ -9,9 +9,6 @@ const authorizeRole = (...roles) => {
 
     next();
 
-    // Temporary: allow all for development
-    // console.log(`  TODO: Implement RBAC for roles: ${roles.join(", ")}`);
-    // next();
   };
 };
 

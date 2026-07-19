@@ -22,11 +22,6 @@ const authenticateToken = (req, res, next) => {
       req.user = decoded;
       next();
     })
-
-    // Temporary: skip authentication for development
-    // console.log("  TODO: Implement JWT authentication");
-    // req.user = { userId: "123", email: "test@example.com", role: "user" };
-    // next();
   } catch (error) {
     res.status(500).json({
       success: false,
