@@ -29,13 +29,93 @@ const User = require('../models/User');
 
 exports.uploadProductImage = async(req, res) => {
     try {
-        const productImage = await 
+        if(!req.files) {
+            return res.status(400).json({
+                success: false,
+                message: "No file attached",
+            });
+        }
+
+        const imageUrl = req.file.path;
+
+        return res.status(200).json({
+            success: true,
+            message: "Image uploaded",
+            imageUrl,
+            filename: req.file.filename,
+            publicId: req.file.public_id,
+        });
     } catch (error) {
         console.error("Error upload product image");
         return res.status(500).json({
             success: false,
             message: "Failed uploading product image",
-        })
+        });
+    }
+}
+
+exports.uploadProfilePhoto = async(req, res) => {
+    try {
+        if(!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: "No file attached",
+            }); 
+        }
+
+        const user = await User.findById(req.user.id);
+
+        if(user.profilePhoto && user.profilePhoto.includes('cloudinary')) {
+            try {
+                const urlParts = user.profilePhoto.split('/');
+                const publicIdWithExit = urlParts[urlParts.length - 1];
+                const publicId = publicIdWithExit.split('.')[0];
+                const folderPath = `health-ecommerce/profiles/${publicId}`;
+
+                await cloudinary.uploader.destroy(folderPath);
+            } catch (error) {
+                console.warn("Failed to delete old photo", error.message);
+            }
+        }
+
+        user.profilePhoto = req.file.path;
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Profile photo updated",
+            imageUrl: req.file.path,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                profilePhoto: user.profilePhoto,
+            }
+        });
+    } catch (error) {
+        console.error("Error upload profile photo");
+        return res.status(500).json({
+            success: false,
+            message: "Failed uploading profile photo",
+        });
+    }
+};
+
+exports.deleteImage = async(req, res) => {
+    try {
+        const { publicId } = req.params;
+        await cloudinary.uploader.destroy(publicId);
+
+        return res.status(200).json({
+            success: true,
+            message: "Image deleted",
+        });
+    } catch (error) {
+        console.error("Error delete image");
+        return res.status(500).json({
+            success: false,
+            message: "Failed deleting image",
+        });
     }
 }
 
