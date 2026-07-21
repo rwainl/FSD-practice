@@ -22,7 +22,7 @@ const rateLimit = require('express-rate-limit');
 
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
-const cartRoute = require('./routes/cartRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 const externalRoutes = require('./routes/externalRoutes');
 const orderRoutes = require('./routes/externalRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');

@@ -19,44 +19,63 @@
 const express = require('express');
 const router = express.Router();
 
-// TODO: Import dependencies
-// const multer = require('multer');
-// const { CloudinaryStorage } = require('multer-storage-cloudinary');
-// const cloudinary = require('../config/cloudinary');
-// const uploadController = require('../controllers/uploadController');
-// const { authenticateToken } = require('../middleware/auth');
-// const { authorizeRole } = require('../middleware/authorize');
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary');
+const uploadController = require('../controllers/uploadController');
+const { authenticateToken } = require('../middleware/auth');
+const { authorizeRole } = require('../middleware/authorize');
 
-// TODO: Setup Cloudinary Storage untuk Product Images
-// const productStorage = new CloudinaryStorage({
-//   cloudinary: cloudinary,
-//   params: {
-//     folder: 'health-ecommerce/products',
-//     allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
-//   },
-// });
 
-// TODO: Setup Cloudinary Storage untuk Profile Photos
-// const profileStorage = new CloudinaryStorage({
-//   cloudinary: cloudinary,
-//   params: {
-//     folder: 'health-ecommerce/profiles',
-//     allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
-//   },
-// });
+const productStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'health-ecommerce/products',
+        allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+        transformation: [{ width: 800, height: 800, crop: "limit", quality: "auto" }],
+    },
+});
 
-// TODO: Setup Multer middleware
-// const uploadProduct = multer({ storage: productStorage });
-// const uploadProfile = multer({ storage: profileStorage });
+const profileStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'health-ecommerce/profiles',
+        allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+        transformation: [{ width: 800, height: 800, crop: "limit", quality: "auto" }],
+    }
+});
 
-// TODO: POST /product - Upload product image (Admin only)
-// router.post('/product', authenticateToken, authorizeRole('admin'), uploadProduct.single('image'), uploadController.uploadProductImage);
+const uploadProduct = multer({
+    storage: productStorage,
+    limits: {
+        fileSize: 5 * 1024 * 1024,
+    },
+    fileFilter: (req, res, cb) => {
+        if(!ifle.mimetype.startsWith('image/')) {
+            return cb(new Error('Only image files are allowed'), false);
+        }
+        cb(null, true);
+    }
+});
 
-// TODO: POST /profile - Upload profile photo (Protected)
-// router.post('/profile', authenticateToken, uploadProfile.single('image'), uploadController.uploadProfilePhoto);
+const uploadProfile = multer({
+    storage: profileStorage,
+    limits: {
+        fileSize: 2 * 1024 * 1024,
+    },
+    fileFilter: (req, res, cb) => {
+        if(!file.mimetype.startsWith('image/')) {
+            return cb(new Error("Only image files are allowed"), false);
+        }
+        cb(null, true);
+    },
+});
 
-// TODO: DELETE /:publicId - Delete image (Protected)
-// router.delete('/:publicId', authenticateToken, uploadController.deleteImage);
+router.post("/product", authenticateToken, authorizeRole('admin'), uploadProduct.single('image'), uploadController.uploadProductImage);
+
+router.post('/profile', authenticateToken, uploadProfile.single('image'), uploadController.uploadProfilePhoto);
+
+router.delete('/:publicId', authenticateToken, uploadController.deleteImage);
 
 module.exports = router;
 
