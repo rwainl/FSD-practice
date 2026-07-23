@@ -71,6 +71,10 @@ function App() {
     }
   };
 
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -95,7 +99,12 @@ function App() {
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* TODO: Render components here */}
         <SearchBar onSearch={handleSearch} />
-        <ProductCard products={products} />
+        <CategoryFilter selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {filteredProducts.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+        </div>
       </main>
       <footer className="bg-white mt-12 border-t">
         <div className="max-w-7xl mx-auto px-4 py-6 text-center text-gray-600">

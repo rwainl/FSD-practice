@@ -1,57 +1,52 @@
 import React from "react";
 
-function ProductCard({ products }) {
+function ProductCard({ product }) {
   return (
     <>
-      <div className="">
-        <h3 className="text-2xl font-semibold my-4">Product List</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {products.map((product, id) => (
-            <div
-              className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition"
-              key={id}
+      <div className="border shadow-md rounded-md px-4 py-6 hover:shadow-xl transition duration-300 overflow-hidden">
+        <div className="relative h-48 bg-gray-200 rounded-md">
+          <img
+            src={
+              product.imageUrl ||
+              "https://via.placeholder.com/400x300?text=Health+Product"
+            }
+            alt={product.name}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.src =
+                "https://via.placeholder.com/400x300?text=No+Image";
+            }}
+          />
+          <span className="absolute top-2 right-2 bg-green-500 text-white text-xs px-3 py-1 rounded-full shadow-lg">
+            {product.category}
+          </span>
+          <span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-3 py-1 rounded-full shadow-lg">
+            {product.stock === 0 ? "Habis" : product.stock}
+          </span>
+        </div>
+        <div className="p-4">
+          <h3 className="font-semibold text-xl text-gray-800 line-clamp-2">
+            {product.name}
+          </h3>
+          <p className="text-sm text-gray-500 mt-1 h-10">
+            {product.manufacturer}
+          </p>
+          <p className="text-sm text-gray-700 mt-2 h-10 line-clamp-2 h-14">
+            {product.description}
+          </p>
+          <div className="flex justify-between">
+            <p className="text-md font-semibold flex items-center">
+              Rp. {product.price.toLocaleString("id-ID")}
+            </p>
+            <button
+              className={`px-6 py-2 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-600 hover:scale-105 hover:shadow-md transition ${
+                product.stock === 0 ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={product.stock === 0}
             >
-              <div className="relative h-48 bg-gray-200">
-                <img
-                  src={
-                    product.imageUrl ||
-                    "https://via.placeholder.com/400x300?text=Health+Product"
-                  }
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.target.src =
-                      "https://via.placeholder.com/400x300?text=No+Image";
-                  }}
-                />
-
-                <span className="absolute top-2 right-2 bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
-                  {product.category}
-                </span>
-
-                {product.stock < 10 && (
-                  <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
-                    {product.stock === 0 ? "Habis" : `Sisa ${product.stock}`}
-                  </span>
-                )}
-              </div>
-              <h3 className="text-lg font-semibold mt-2">{product.name}</h3>
-              <p className="text-sm text-gray-500 mt-2 h-10 line-clamp-2">
-                {product.description}
-              </p>
-              <div>
-                <p className="text-2xl font-bold text-blue-600">
-                  Rp {product.price.toLocaleString("id-ID")}
-                </p>
-                <p className="text-xs text-gray-500 mt-1">
-                  {product.manufacturer}
-                </p>
-              </div>
-              <button className="w-full mt-4 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition">
-                Buy
-              </button>
-            </div>
-          ))}
+              Beli
+            </button>
+          </div>
         </div>
       </div>
     </>
