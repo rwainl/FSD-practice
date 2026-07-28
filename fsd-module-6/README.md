@@ -34,7 +34,7 @@ src/
 
 ### Finished TODO Implementation
 
-TODO pada starter project telah selesai diimplementasikan:
+TODO pada starter project yang selesai diimplementasikan:
 
 - [x] services/api.js: Inisialisasi Axios client dengan baseURL: 'http://localhost:3000/api'.
 
