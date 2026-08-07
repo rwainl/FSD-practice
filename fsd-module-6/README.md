@@ -36,7 +36,7 @@ src/
 
 TODO pada starter project telah selesai diimplementasikan:
 
-- [x] services/api.js: Inisialisasi Axios client dengan baseURL: 'http://localhost:5000/api' serta fungsi pembantu getProducts(params) untuk penanganan query pencarian dan kategori.
+- [x] services/api.js: Inisialisasi Axios client dengan baseURL: 'http://localhost:3000/api' serta fungsi pembantu getProducts(params) untuk penanganan query pencarian dan kategori.
 
 - [x] components/ProductCard.jsx: Pembuatan komponen kartu produk modular yang menerima props produk (gambar, nama, harga, deskripsi, tag kategori) beserta efek hover.
 
