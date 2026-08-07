@@ -57,4 +57,4 @@ Fitur dasar dan integrasi pihak ketiga telah selesai diimplementasikan:
 
 - [x] Media Management: Engine upload foto produk (auto-crop 800x800) dan foto profil (400x400) ke Cloudinary.
 
-- [ ] Kemenkes Data Fetching: Service pengambil data obat FHIR/Kemenkes.
+- [ ] Kemenkes Data Fetching: Service pengambil data obat FHIR/Kemenkes. (Coming soon)
