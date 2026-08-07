@@ -1,75 +1,47 @@
-# Health E-Commerce - Starter Project (Modul 1)
+# Health E-Commerce: React Catalog (Completed)
 
-Starter template untuk belajar React fundamentals dengan TailwindCSS.
+Frontend aplikasi Health E-Commerce yang dibuat menggunakan React 18, Vite, dan TailwindCSS. Project ini telah menyelesaikan seluruh instruksi TODO pada starter project dan terintegrasi dengan backend API.
 
-## Penting - Backend
+### Technical Stack
 
-Sebelum menjalankan frontend, pastikan Backend (Modul 5) berjalan di `http://localhost:5000`.
+- UI Framework: React 18
 
-Jangan lupa running project final backend dari Modul 5 di backend modul program intermediate ini. Backend yang harus digunakan adalah `komdigi-fsd-intermediate-modul-5-backend-health-ecommerce-external-integration` dari folder `backend/health-ecommerce-external-integration/finished-project`.
+- Build Tool: Vite
 
-Langkah-langkah setup backend:
+- Styling: TailwindCSS
 
-1. Masuk ke folder backend Modul 5:
-```bash
-cd backend/health-ecommerce-external-integration/finished-project
+- HTTP Client: Axios
+
+- Backend Target: Node.js / Express API (http://localhost:3000/api)
+
+### Project Structure
+
+```
+src/
+├── components/
+│   ├── ProductCard.jsx      # Menampilkan kartu produk & event handler
+│   ├── CategoryFilter.jsx   # Tombol filter kategori produk
+│   ├── SearchBar.jsx        # Input pencarian produk berbasis query
+│   ├── LoadingSpinner.jsx   # Indicator status memuat data
+│   ├── ErrorMessage.jsx     # Tampilan pesan kesalahan
+│   └── Header.jsx           # Header & navigasi utama
+├── services/
+│   └── api.js              # Axios instance & fungsi pemanggilan API
+├── App.jsx                  # Integrasi state, filter, pencarian, & fetch data
+├── main.jsx                 # Entry point React
+└── index.css                # Konfigurasi TailwindCSS
 ```
 
-2. Install dependencies:
-```bash
-npm install
-```
+### Finished TODO Implementation
 
-3. Setup file `.env`:
-   - Buat file `.env` di folder `finished-project` (copy dari `.env.example` jika ada)
-   - Set minimal environment variables berikut:
-     ```env
-     NODE_ENV=development
-     PORT=5000
-     MONGODB_URI=mongodb://localhost:27017/health-ecommerce
-     JWT_SECRET=your-super-secret-jwt-key-change-in-production-min-32-characters
-     JWT_EXPIRES_IN=24h
-     ```
-   - Untuk fitur tambahan (optional), bisa set:
-     - `GOOGLE_AI_API_KEY` (untuk AI chatbot)
-     - `CLOUDINARY_*` (untuk image upload)
-     - `MIDTRANS_*` (untuk payment)
-     - `SMTP_*` (untuk email service)
-     - `KEMENKES_API_KEY` (untuk Kemenkes integration)
+TODO pada starter project telah selesai diimplementasikan:
 
-4. Pastikan MongoDB running:
-   - Tidak perlu menjalankan `mongod` jika tidak jalan di localmu
-   - Pastikan saja MongoDB jalan dengan caramu, misalnya:
-     - Membuka MongoDB Compass dan akses database yang kamu tuju (misalnya local db mu)
-     - Jika MongoDB Compass sudah bisa connect ke `mongodb://localhost:27017`, berarti MongoDB sudah jalan
-     - Atau jika pakai MongoDB Atlas, pastikan cluster sudah active
-     - Intinya: Pastikan MongoDB bisa diakses sesuai MONGODB_URI yang kamu set di .env
+- [x] services/api.js: Inisialisasi Axios client dengan baseURL: 'http://localhost:5000/api' serta fungsi pembantu getProducts(params) untuk penanganan query pencarian dan kategori.
 
-5. Seed data (optional, jika ada):
-```bash
-npm run seed
-```
+- [x] components/ProductCard.jsx: Pembuatan komponen kartu produk modular yang menerima props produk (gambar, nama, harga, deskripsi, tag kategori) beserta efek hover.
 
-6. Start backend (keep running di terminal terpisah):
-```bash
-npm run dev
-```
+- [x] components/CategoryFilter.jsx: Komponen filter kategori interaktif dengan penanda status aktif (active state styling).
 
-7. Verifikasi backend running:
-   - Backend akan tersedia di `http://localhost:5000`
-   - Test dengan: `curl http://localhost:5000/health` atau buka di browser
-   - Pastikan response success
+- [x] components/SearchBar.jsx: Komponen form pencarian real-time / on-submit untuk menyaring data produk.
 
-8. Set environment variable di frontend:
-   - Di file `.env` di frontend project (jika ada), atau langsung di code, pastikan URL backend sama dengan yang dirun
-   - Default: `http://localhost:5000/api`
-   - Jika backend running di port lain, update URL di `src/services/api.js` atau `src/App.jsx`
-
-## Run Frontend (starter-project)
-
-```bash
-cd starter-project
-npm install
-npm run dev
-# Buka http://localhost:5173
-```
+- [x] App.jsx: Penggabungan seluruh komponen, manajemen state (products, loading, error, selectedCategory, searchQuery), dan side-effect useEffect untuk pengambilan data otomatis.
