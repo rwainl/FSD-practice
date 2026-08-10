@@ -19,6 +19,7 @@ api.interceptors.request.use((config) => {
 });
 
 export const getProducts = () => api.get('/products');
+export const getProductById = (id) => api.get(`/products/${id}`);
 
 
 // TODO: Create API functions untuk products
