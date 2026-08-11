@@ -21,6 +21,8 @@ api.interceptors.request.use((config) => {
 export const getProducts = () => api.get('/products');
 export const getProductById = (id) => api.get(`/products/${id}`);
 
+export const login = (creds) => api.post('/auth/login', creds);
+export const register = (userData) => api.post('/auth/register', userData);
 
 // TODO: Create API functions untuk products
 // Example:

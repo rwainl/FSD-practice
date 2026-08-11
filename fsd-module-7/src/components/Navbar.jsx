@@ -68,6 +68,15 @@ function Navbar() {
               </Badge>
               <span className="ml-2">Cart</span>
             </Link>
+            <Link
+              to="/login"
+              className={`flex items-center space-x-1 transition ${
+                isActive("/login") ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"
+              }`}
+            >
+              <LoginOutlined />
+              <span className="ml-2">Login</span>
+            </Link>
           </div>
         </div>
       </div>
