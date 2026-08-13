@@ -25,6 +25,7 @@
 // import { useAuth } from '../context/AuthContext';
 // import { useCart } from '../context/CartContext';
 // import apiClient from '../services/api';
+import React from 'react'
 
 // TODO: Create ProductDetailPage component
 // function ProductDetailPage() {
@@ -35,6 +36,13 @@
 //   // Return JSX
 // }
 
+function ProductDetailPage() {
+  return (
+    <div>ProductDetailPage</div>
+  )
+}
+
 // TODO: Export
 // export default ProductDetailPage;
+export default ProductDetailPage
 
