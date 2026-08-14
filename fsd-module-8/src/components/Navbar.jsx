@@ -31,6 +31,7 @@ import {
 } from "@ant-design/icons";
 import { Menu, Button, Avatar, Dropdown, Drawer, Badge } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useCart } from '../context/CartContext';
 
 // TODO: Create Navbar component
 // function Navbar() {
@@ -42,7 +43,7 @@ import { useNavigate } from "react-router-dom";
 function Navbar() {
     const location = useLocation();
     const isActive = (path) => location.pathname === path;
-    // const {cartCount} = useCart();
+    const {cartCount} = useCart();
 
   return (
     <>
@@ -73,7 +74,7 @@ function Navbar() {
                             to="/cart"
                             className={`flex items-center space-x-1 transition ${isActive("/cart") ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"}`}
                         >
-                            <Badge count="0" offset={[3, 0]} showZero>
+                            <Badge count={cartCount} offset={[3, 0]} showZero>
                             <ShoppingCartOutlined />
                             </Badge>
                             <span className='ml-2'>Cart</span>

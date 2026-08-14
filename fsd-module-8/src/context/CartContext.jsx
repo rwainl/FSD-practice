@@ -9,6 +9,7 @@
  */
 
 import { createContext, useContext, useState, useEffect } from 'react';
+import { message } from 'antd';
 
 const CartContext = createContext();
 
@@ -22,19 +23,41 @@ export const useCart = () => {
 
 export function CartProvider({ children }) {
   // TODO 1: Initialize cart state dari localStorage
-  const [cart, setCart] = useState(() => {
-    // TODO: Load cart from localStorage
-    // TODO: Parse JSON atau return empty array jika tidak ada
+  // const [cart, setCart] = useState(() => {
+  //   // TODO: Load cart from localStorage
+  //   // TODO: Parse JSON atau return empty array jika tidak ada
     
-    // HINT: const saved = localStorage.getItem('cart');
-    // HINT: return saved ? JSON.parse(saved) : [];
-  });
+  //   // HINT: const saved = localStorage.getItem('cart');
+  //   // HINT: return saved ? JSON.parse(saved) : [];
+  //     const saved = localStorage.getItem('cart');
+  //     if(saved) {
+  //       try {
+  //         return JSON.parse(saved);
+  //       } catch (error) {
+  //         console.error(error.message);
+  //       }
+  //     }
+  //     return [];
+  // });
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('cart');
+    if(saved) {
+      try {
+        setCart(JSON.parse(saved));
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
+  }, []);
 
   // TODO 2: Save cart to localStorage setiap cart changes
   useEffect(() => {
     // TODO: Save cart to localStorage as JSON string
     
     // HINT: localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
   // TODO 3: Implement addToCart function
@@ -42,25 +65,25 @@ export function CartProvider({ children }) {
     // TODO: Check if product already in cart
     // TODO: If yes, increment quantity
     // TODO: If no, add new item dengan quantity 1
-    
-    // HINT: setCart((prevCart) => {
-    // HINT:   const existing = prevCart.find(item => item._id === product._id);
-    // HINT:   if (existing) {
-    // HINT:     return prevCart.map(item =>
-    // HINT:       item._id === product._id
-    // HINT:         ? { ...item, quantity: item.quantity + 1 }
-    // HINT:         : item
-    // HINT:     );
-    // HINT:   }
-    // HINT:   return [...prevCart, { ...product, quantity: 1 }];
-    // HINT: });
+    setCart((prev) => {
+      const existingItem = prev.find((item) => item._id === product._id);
+
+      if(existingItem) {
+        message.success(`${product.name} Quantity +1`);
+        return prev.map((item) => item._id === product._id ? {...item, quantity: item.quantity + 1} : item);
+      } else {
+        message.success(`${product.name} added to cart`);
+        return [...prev, {...product, quantity: 1}];
+      }
+    })
   };
 
   // TODO 4: Implement removeFromCart function
   const removeFromCart = (productId) => {
     // TODO: Filter out product dengan matching ID
     
-    // HINT: setCart(prevCart => prevCart.filter(item => item._id !== productId));
+    setCart((prev) => prev.filter((item) => item._id !== productId));
+    message.info('Product removed from cart');
   };
 
   // TODO 5: Implement updateQuantity function
@@ -68,27 +91,35 @@ export function CartProvider({ children }) {
     // TODO: If quantity <= 0, remove item
     // TODO: Otherwise, update quantity
     
-    // HINT: if (quantity <= 0) {
-    // HINT:   removeFromCart(productId);
-    // HINT:   return;
-    // HINT: }
+    if(quantity <= 0) {
+      removeFromCart(productId);
+      return;
+    }
+
+    setCart((prev) => prev.map((item) => item._id === productId ? {...item, quantity} : item));
   };
 
   // TODO 6: Implement clearCart function
   const clearCart = () => {
     // TODO: Set cart to empty array
+    setCart([]);
+    message.success('Cart cleared');
   };
 
   // TODO 7: Implement getCartTotal function
   const getCartTotal = () => {
     // TODO: Calculate total price (sum of price * quantity untuk all items)
-    
-    // HINT: return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return cart.reduce((total, item) => {
+      return total + (item.price * item.quantity); 
+    }, 0);
   };
 
   // TODO 8: Implement getCartCount function
   const getCartCount = () => {
     // TODO: Count total items (sum of all quantities)
+    return cart.reduce((count, item) => {
+      return count + item.quantity, 0
+    })
   };
 
   return (

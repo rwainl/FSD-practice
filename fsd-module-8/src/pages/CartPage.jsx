@@ -20,6 +20,10 @@
 // import { Card, Table, Button, InputNumber, message } from 'antd';
 // import { useCart } from '../context/CartContext';
 // import { useNavigate } from 'react-router-dom';
+import React from 'react'
+import { useCart } from '../context/CartContext'
+import { useNavigate } from 'react-router-dom'
+import { Card, Table, Button, InputNumber, message } from 'antd'
 
 // TODO: Create CartPage component
 // function CartPage() {
@@ -30,7 +34,13 @@
 //   // Handle checkout
 //   // Return JSX
 // }
+function CartPage() {
+  return (
+    <div>CartPage</div>
+  )
+}
 
 // TODO: Export
 // export default CartPage;
+export default CartPage
 
