@@ -107,20 +107,16 @@ export function CartProvider({ children }) {
   };
 
   // TODO 7: Implement getCartTotal function
-  const getCartTotal = () => {
-    // TODO: Calculate total price (sum of price * quantity untuk all items)
-    return cart.reduce((total, item) => {
-      return total + (item.price * item.quantity); 
-    }, 0);
-  };
+  // const getCartTotal = () => {
+  //   // TODO: Calculate total price (sum of price * quantity untuk all items)
+  //   return cart.reduce((total, item) => {
+  //     return total + (item.price * item.quantity); 
+  //   }, 0);
+  // };
+  const getCartTotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
 
   // TODO 8: Implement getCartCount function
-  const getCartCount = () => {
-    // TODO: Count total items (sum of all quantities)
-    return cart.reduce((count, item) => {
-      return count + item.quantity, 0
-    })
-  };
+  const getCartCount = cart.reduce((count, item) => count + item.quantity, 0);
 
   return (
     <CartContext.Provider

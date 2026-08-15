@@ -36,7 +36,7 @@ import ProductCard from '../components/ProductCard';
 function ProductsPage() {
   const {data, isLoading, error} = useQuery({
     queryKey: ["products"],
-    queryFn: () => api.get("/api/products").then((res) => res.data),
+    queryFn: () => api.get("/products").then((res) => res.data),
     staleTime: 5 * 60 * 1000,
   });
 
