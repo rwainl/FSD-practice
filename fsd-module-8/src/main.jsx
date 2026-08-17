@@ -5,12 +5,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { CartProvider } from './context/CartContext'
 import App from './App.jsx'
 import './index.css'
+import { AuthProvider } from './context/AuthContext'
 
 // TODO: Add ThemeProvider untuk dark mode support
 // import { ThemeProvider } from './context/ThemeContext'
 
 // TODO: Add AuthProvider untuk authentication
-// import { AuthProvider } from './context/AuthContext'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,11 +28,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <QueryClientProvider client={queryClient}>
         {/* TODO: Wrap dengan ThemeProvider dan AuthProvider */}
         {/* <ThemeProvider> */}
-        {/*   <AuthProvider> */}
+          <AuthProvider>
         <CartProvider>
           <App />
         </CartProvider>
-        {/*   </AuthProvider> */}
+          </AuthProvider>
         {/* </ThemeProvider> */}
       </QueryClientProvider>
     </BrowserRouter>

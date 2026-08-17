@@ -1,44 +1,72 @@
-/**
- * Authentication Service (Frontend)
- * 
- * TODO untuk peserta:
- * 1. Import apiClient dari './api'
- * 2. Implement register function:
- *    - POST /api/auth/register dengan userData
- *    - Save token ke localStorage
- *    - Save user data ke localStorage
- *    - Return response data
- * 
- * 3. Implement login function:
- *    - POST /api/auth/login dengan email & password
- *    - Save token ke localStorage
- *    - Save user data ke localStorage
- *    - Return response data
- * 
- * 4. Implement logout function:
- *    - Remove token dari localStorage
- *    - Remove user data dari localStorage
- * 
- * 5. Implement getProfile function:
- *    - GET /api/auth/profile (Protected)
- *    - Update user data di localStorage
- *    - Return user data
- * 
- * 6. Implement updateProfile function:
- *    - PUT /api/auth/profile dengan FormData (multipart/form-data)
- *    - Support fields: name, phone, address, password (optional), image (optional)
- *    - Update user data di localStorage
- *    - Return updated user data
- * 
- * 7. Implement helper functions:
- *    - isAuthenticated() - Check if token exists
- *    - getCurrentUser() - Get user from localStorage
- * 
- * Reference: ../finished-project/src/services/authService.js
- */
+import api from './api';
 
-// TODO: Import apiClient
-// import apiClient from './api';
+export const register = async(userData) => {
+    try {
+        const response = await api.post('/auth/register', userData);
+
+        if(response.data.success && response.data.token) {
+            localStorage.setItem('auth_token', response.data.token);
+
+            if(response.data.user) {
+                localStorage.setItem('user_data', response.data.user);
+            }
+            return response.data;
+        }
+
+        throw new Error(response.data.message || 'Registration failed.');
+    } catch (error) {
+        throw new Error(error.response?.data?.message || error.message || 'Registration failed. Please try again.');
+    }
+}
+
+export const login = async(email, password) => {
+    try {
+        const response = await api.post('/auth/login', {
+            email, password
+        });
+
+        if(response.data.success && response.data.token) {
+            localStorage.setItem('auth_token', response.data.token);
+            if(response.data.user) {
+                localStorage.setItem('user_data', JSON.stringify(response.data.user))
+            }
+            return response.data;
+        }
+        throw new Error(response.data.message || 'Login failed.');
+    } catch (error) {
+        // console.error(error.message);
+        throw new Error(error.response?.data?.message || error.message || 'Failed login. Check your email and password');
+    }
+}
+
+export const logout = () => {
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user_data');
+};
+
+export const getProfile = async() => {
+    try {
+        const response = await api.get('/auth/profile');
+
+        if(response.data.success && response.data.data) {
+            localStorage.setItem('user_data', JSON.stringify(response.data.data));
+        }
+        
+        throw new Error(response.data.message || 'Failed to get profile.');
+    } catch (error) {
+        throw new Error(error.response?.data?.message || error.message || 'Failed to get profile. Try again.');
+    }
+}
+
+export const isAuthenticated = async() => {
+    const token = localStorage.getItem('auth_token');
+    return !!token;
+}
+
+export const getCurrentUser = async() => {
+    const userData = localStorage.getItem('user_data');
+    return userData ? JSON.parse('userData') : null;
+}
 
 // TODO: Register function
 // export const register = async (userData) => {
