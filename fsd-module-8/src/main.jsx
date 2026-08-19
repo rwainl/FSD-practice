@@ -10,8 +10,6 @@ import { AuthProvider } from './context/AuthContext'
 // TODO: Add ThemeProvider untuk dark mode support
 // import { ThemeProvider } from './context/ThemeContext'
 
-// TODO: Add AuthProvider untuk authentication
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

@@ -17,8 +17,8 @@ import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 // import OrderSuccessPage from './pages/OrderSuccessPage';
 import LoginPage from './pages/LoginPage';
+import ProfilePage from "./pages/ProfilePage";
 // import RegisterPage from './pages/RegisterPage';
-// import ProfilePage from './pages/ProfilePage';
 // import OrderHistoryPage from './pages/OrderHistoryPage';
 // import OrderDetailPage from './pages/OrderDetailPage';
 
@@ -34,6 +34,7 @@ function App() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </div>
   );

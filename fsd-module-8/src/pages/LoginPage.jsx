@@ -4,30 +4,33 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Alert, Button, Card, Form, Input, message, Spin } from 'antd';
 import {login} from '../services/authService'
+import { useAuth } from '../context/AuthContext';
 
 function LoginPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const [loading, setLoading] = useState(false);
+    const { login: setAuthLogin } = useAuth();
     const [error, setError] = useState(false);
 
     if(loading) {
         return (
             <div className="container mx-auto px-4 py-8 flex justify-center items-center h-64">
-                <Spin size='large' tip="Loading page..." />
+                <Spin size='large' />
             </div>
         )
     }
+
+    const from = location.state?.from?.pathname || '/';
 
     const onFinish = async(values) => {
         setLoading(true);
         setError(false);
         try {
-            const response = await login(values);
-            if(response.data.success) {
-                localStorage.setItem('token', response.data.token);
-                navigate('/products');
-            }
+            const response = await login(values.email, values.password);
+            setAuthLogin(response.user, response.token);
+            message.success('Login successful! Welcome ' + response.user.name);
+            navigate(from, {replace: true});
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message || 'Failed Login.';
             message.error(errorMessage);
@@ -116,7 +119,5 @@ function LoginPage() {
   )
 }
 
-// TODO: Export
-// export default LoginPage;
 export default LoginPage
 

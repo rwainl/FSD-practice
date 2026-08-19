@@ -47,6 +47,20 @@ function CartPage() {
         />
       )
     },
+    {
+      title: 'Subtotal',
+      key: 'subtotal',
+      render: (_, record) => {
+        const price = record.price || 0;
+        const quantity = record.quantity || 1;
+        const subtotal = price * quantity;
+        return (
+          <span className="font-bold text-blue-600">
+            Rp {Number(subtotal).toLocaleString('id-ID')}
+          </span>
+        );
+      },
+    },
   ];
 
   if(cart.length === 0) {
