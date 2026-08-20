@@ -12,7 +12,7 @@ export const useAuth = () => {
 }
 
 export function AuthProvider({ children }) {
-    const [user, setUser] = useState([]);
+    const [user, setUser] = useState(() => getCurrentUser());
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -32,6 +32,16 @@ export function AuthProvider({ children }) {
     const login = (userData, token) => {
         setUser(userData);
         setIsLoggedIn(true);
+
+        window.dispatchEvent(new Event('auth-changed'));
+    };
+
+    const logout = () => {
+        logoutService();
+        setUser(null);
+        setIsLoggedIn(false);
+
+        localStorage.removeItem('cart');
 
         window.dispatchEvent(new Event('auth-changed'));
     };

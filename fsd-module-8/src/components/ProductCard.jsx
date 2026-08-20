@@ -1,17 +1,31 @@
 import React from 'react'
-import { Card, Button, Tag } from 'antd'
-import { ShoppingCartOutlined } from '@ant-design/icons/lib/icons'
+import { Card, Button, Tag, message } from 'antd'
+import { ShoppingCartOutlined, LoginOutlined } from '@ant-design/icons/lib/icons'
 import { useNavigate } from "react-router-dom"
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 
 const { Meta } = Card;
 
 function ProductCard({ product }) {
     const navigate = useNavigate();
-
+    const { isLoggedIn } = useAuth();
     const {addToCart} = useCart();
 
     const handleAddToCart = (e) => {
+        if(!isLoggedIn) {
+            message.warning({
+                content: 'Login to add products',
+                duration: 3,
+                icon: <LoginOutlined />,
+                onClick: () => navigate('/login'),
+            });
+            setTimeout(() => {
+                navigate('/login', {state: {from: location}})
+            }, 1500);
+            return;
+        }
+
         e.stopPropagation();
         addToCart(product);
     };
@@ -24,7 +38,6 @@ function ProductCard({ product }) {
     <>
         <Card
             hoverable
-            onClick={handleCardClick}
             cover={
                 <img
                     alt={product.name}
