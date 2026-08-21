@@ -103,7 +103,7 @@ function ProfilePage() {
 
             <Card
                 title="Form Edit"
-                className='lg:col-span2'
+                className='lg:col-span-2'
             >
                 <Form
                     form={form}
@@ -186,7 +186,21 @@ function ProfilePage() {
                         </div>
                     </Form.Item>
                 </Form>
-                <Divider>Change Password</Divider>
+                <Divider>Change Password (Optional)</Divider>
+
+                <Form.Item
+                    label="Password"
+                    name="password"
+                    tooltip="Optional"
+                    rules={[
+                        {
+                            min: 6,
+                            message: "Password at least 6 characters",
+                        }
+                    ]}
+                >
+                    <Input.Password placeholder='New Password (Optional)' />
+                </Form.Item>
             </Card>
         </div>
     </div>

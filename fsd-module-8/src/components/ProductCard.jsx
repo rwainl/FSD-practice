@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, Button, Tag, message } from 'antd'
 import { ShoppingCartOutlined, LoginOutlined } from '@ant-design/icons/lib/icons'
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 
@@ -38,45 +38,54 @@ function ProductCard({ product }) {
     <>
         <Card
             hoverable
+            className='h-full flex flex-col overflow-hidden'
+            bodyStyle={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '16px' }}
             cover={
-                <img
-                    alt={product.name}
-                    src={
-                        product.imageUrl || "https://via.placeholder.com/300x200?text=Health+Product"
-                    }
-                    className='h-48 object-cover'
-                />
+                <Link to={`/products/${product._id}`} className='block overflow-hidden'>
+                    <div className="relative w-full h-48 sm:h-56 md:h-64 bg-gray-50 overflow-hidden border-b border-gray-200">
+                        <div className="absolute inset-0 flex items-center justify-center p-4">
+                            <img 
+                                alt={product.name}
+                                // src={product.image || '/placeholder.webp'}
+                                src=''
+                                className='max-w-full max-h-full w-auto h-auto object-contain'
+                                style={{ maxWidth: '100%', maxHeight: '100%' }}
+                                onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = '/placeholder.webp';
+                                }}
+                            />
+                        </div>
+                    </div>
+                </Link>
             }
             actions={[
                 <Button
                     type='primary'
                     onClick={handleAddToCart}
                     icon={<ShoppingCartOutlined />}
-                    key="add-to-cart"
+                    key="cart"
+                    className='!text-xs sm:!text-sm'
                 >
-                    Add to cart
+                    <span className='hidden xs:inline'>Add to cart</span>
+                    <span className='xs:hidden'>Add</span>
                 </Button>
             ]}
         >
             <Meta
                 title={
-                    <div className='flex flex-col justify-between items-start'>
-                        <span className='text-lg font-semibold'>
-                            {product.name}
-                        </span>
-                        <Tag color="blue">{product.category}</Tag>
-                    </div>
+                    <Link to={`/products/${product._id}`} className='text-gray-800 hover:text-blue-600 text-sm sm:text-base md:text-lg font-semibold line-clamp-2 block mb-2' >
+                        {product.name}
+                    </Link>
                 }
                 description={
-                    <div className="">
-                        <p className='text-gray-600 text-sm mb-2'>
-                            {product.description}
-                        </p>
-                        <p className='text-2xl font-bold text-blue-600'>
+                    <div className="space-y-2">
+                        <Tag color="blue" className='text-xs'>{product.category}</Tag>
+                        <p className='text-base sm:text-lg md:text-xl font-bold text-blue-600 mb-1'>
                             Rp. {product.price.toLocaleString('id-ID')}
                         </p>
-                        <p className='text-sm tex-gray-500 mt-1'>
-                            Stock: {product.stock || 0} unit
+                        <p className='text-xs sm:text-sm text-gray-500'>
+                            Stock: <span className={product.stock > 0 ? 'text-green-600 font-medium' : 'text-red-600 font-medium'}>{product.stock}</span>
                         </p>
                     </div>
                 }
