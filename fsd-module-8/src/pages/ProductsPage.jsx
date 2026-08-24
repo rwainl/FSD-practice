@@ -6,6 +6,7 @@ import ProductCard from '../components/ProductCard';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { SearchOutlined } from '@ant-design/icons';
+import ProductSkeleton from '../components/ProductSkeleton';
 
 const {Search} = Input;
 
@@ -122,7 +123,7 @@ function ProductsPage() {
           <Row gutter={[12,12]} className='sm:gutter-[16,16]'>
             {[1,2,3,4,5,6].map((i) => (
               <Col xs={24} sm={12} md={8} lg={6} key={i} >
-                tes
+                <ProductSkeleton />
               </Col>
             ))}
           </Row>

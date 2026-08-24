@@ -1,28 +1,26 @@
-/**
- * Protected Route Component
- * 
- * TODO untuk peserta:
- * 1. Import Navigate dari 'react-router-dom'
- * 2. Import useAuth dari '../context/AuthContext'
- * 3. Create ProtectedRoute component:
- *    - Get isLoggedIn dari useAuth
- *    - If not logged in, redirect to /login
- *    - If logged in, render children
- * 
- * Reference: ../finished-project/src/components/ProtectedRoute.jsx
- */
+import React from 'react'
+import { useAuth } from '../context/AuthContext'
+import { Navigate, useLocation } from 'react-router-dom'
+import { Spin } from 'antd'
 
-// TODO: Import dependencies
-// import { Navigate } from 'react-router-dom';
-// import { useAuth } from '../context/AuthContext';
+function ProtectedRoute({ children }) {
+    const { isLoggedIn, loading } = useAuth();
+    const location = useLocation();
 
-// TODO: Create ProtectedRoute component
-// function ProtectedRoute({ children }) {
-//   // Get isLoggedIn from useAuth
-//   // If not logged in, return <Navigate to="/login" />
-//   // If logged in, return children
-// }
+    if(loading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <Spin size='large' />
+            </div>
+        );
+    }
 
-// TODO: Export
-// export default ProtectedRoute;
+    if(!isLoggedIn) {
+        return <Navigate to="/login" state={{ from: location }} replace />
+    }
+    
+  return children;
+}
+
+export default ProtectedRoute
 
