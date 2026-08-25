@@ -1,31 +1,37 @@
 import { Component } from 'react';
 
-// TODO: Implement Error Boundary
-// Class component yang catch errors di child components
-
 class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null };
   }
 
-  // TODO: Implement getDerivedStateFromError
-  // Return { hasError: true, error }
+  static getDerivedStateFromError(error) {
+    return { hasError: false, error }
+  }
 
-  // TODO: Implement componentDidCatch
-  // Log error to console or error reporting service
+  componentDidCatch(error, errorInfo) {
+
+  }
 
   render() {
     if (this.state.hasError) {
-      // TODO: Create fallback UI
-      // Show user-friendly error message dengan reload button
       return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
           <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
             <div className="text-6xl mb-4"></div>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">
-               TODO: Add error message
+               Oops! Something went wrong.
             </h2>
+            <p className='text-sm text-gray-500 mb-6 font-mono'>
+              Error: {this.state.error?.message}
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className='bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition'
+            >
+              Refresh
+            </button>
           </div>
         </div>
       );

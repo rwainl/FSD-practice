@@ -6,6 +6,7 @@ import { CartProvider } from './context/CartContext'
 import App from './App.jsx'
 import './index.css'
 import { AuthProvider } from './context/AuthContext'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 // TODO: Add ThemeProvider untuk dark mode support
 // import { ThemeProvider } from './context/ThemeContext'
@@ -14,6 +15,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
       retry: 3,
       refetchOnWindowFocus: false,
     },
@@ -26,11 +28,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <QueryClientProvider client={queryClient}>
         {/* TODO: Wrap dengan ThemeProvider dan AuthProvider */}
         {/* <ThemeProvider> */}
+        <ErrorBoundary>
           <AuthProvider>
-        <CartProvider>
-          <App />
-        </CartProvider>
+            <CartProvider>
+              <App />
+            </CartProvider>
           </AuthProvider>
+        </ErrorBoundary>
         {/* </ThemeProvider> */}
       </QueryClientProvider>
     </BrowserRouter>
