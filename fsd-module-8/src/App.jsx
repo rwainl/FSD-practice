@@ -21,6 +21,7 @@ import ProfilePage from "./pages/ProfilePage";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import RegisterPage from "./pages/RegisterPage";
+import OrderHistoryPage from "./pages/OrderHistoryPage";
 // import OrderHistoryPage from './pages/OrderHistoryPage';
 // import OrderDetailPage from './pages/OrderDetailPage';
 
@@ -60,6 +61,14 @@ function App() {
             <ProtectedRoute>
               <ProfilePage />
             </ProtectedRoute>
+          }
+        />
+        <Route 
+          path="/orders"
+          element={
+          <ProtectedRoute>
+            <OrderHistoryPage />
+          </ProtectedRoute>
           }
         />
       </Routes>
